@@ -1,3 +1,4 @@
+
 # Logs
 logs
 *.log
@@ -91,6 +92,9 @@ out
 .nuxt
 dist
 
+# Vite build output
+dist-ssr
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
@@ -103,12 +107,6 @@ dist
 # vuepress v2.x temp and cache directory
 .temp
 .cache
-
-# vitepress build output
-**/.vitepress/dist
-
-# vitepress cache directory
-**/.vitepress/cache
 
 # Docusaurus cache and generated files
 .docusaurus
@@ -125,7 +123,20 @@ dist
 # TernJS port file
 .tern-port
 
-# Stores VSCode versions used for testing VSCode extensions
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+# Stores VS Code versions used for testing VS Code extensions
 .vscode-test
 
 # yarn v2
@@ -133,4 +144,3 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-.pnp.*
