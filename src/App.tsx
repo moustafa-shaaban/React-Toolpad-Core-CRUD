@@ -4,6 +4,7 @@ import NotesIcon from '@mui/icons-material/Notes';
 import { Outlet } from 'react-router';
 import { ReactRouterAppProvider } from '@toolpad/core/react-router';
 import type { Navigation } from '@toolpad/core/AppProvider';
+import { DialogsProvider } from '@toolpad/core/useDialogs';
 
 const NAVIGATION: Navigation = [
   {
@@ -26,11 +27,12 @@ const BRANDING = {
 };
 
 
-export default function App() {
+export default function App({ children }) {
   
   return (
     <ReactRouterAppProvider navigation={NAVIGATION} branding={BRANDING}>
       <Outlet />
+      <DialogsProvider>{children}</DialogsProvider>;
     </ReactRouterAppProvider>
   );
 }
