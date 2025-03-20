@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { nanoid } from "nanoid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -7,26 +8,12 @@ import Button from "@mui/material/Button";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DialogsProvider, useDialogs } from '@toolpad/core/useDialogs';
+import { useDialogs } from '@toolpad/core/useDialogs';
+import { useNotifications } from '@toolpad/core/useNotifications';
 
 import useNotesStore from "../stores/notes";
 import NoteForm from "./noteForm";
-import { nanoid } from "nanoid";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 const NotesList = () => {
 
@@ -36,6 +23,7 @@ const NotesList = () => {
   const [selectedNote, setSelectedNote] = useState(null);
 
   const dialogs = useDialogs();
+  const notifications = useNotifications();
 
 
   const handleClickOpen = () => {
@@ -56,10 +44,18 @@ const NotesList = () => {
     if (note.id) {
       // Update existing note
       updateNote(note.id, { title: note.title, content: note.content });
+      notifications.show('Note Updated Successfully', {
+        severity: "success",
+        autoHideDuration: 3000,
+      });
     } else {
       // Add new note
       const newNote = { ...note, id: nanoid() };
       createNote(newNote);
+      notifications.show('Note Added Successfully', {
+        severity: "success",
+        autoHideDuration: 3000,
+      });
     }
     setOpen(false);
   };
@@ -67,7 +63,7 @@ const NotesList = () => {
   return (
     <div>
       <Button onClick={handleClickOpen}>Create Note</Button>
-      
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           {selectedNote ? "Update Note" : "Create Note"}
@@ -105,15 +101,18 @@ const NotesList = () => {
                 onClick={async () => {
                   // preview-start
                   const confirmed = await dialogs.confirm(`Are you sure you want to delete ${note.title}? `, {
-                    okText: 'Yes',
-                    cancelText: 'No',
+                    okText: 'Delete',
+                    cancelText: 'Cancel',
                   });
                   if (confirmed) {
-                    await deleteNote(note.id);
+                    deleteNote(note.id);
+                    notifications.show('Note Deleted Successfully', {
+                      severity: "success",
+                      autoHideDuration: 3000,
+                    });
                   } else {
-                    await dialogs.close;
+                    dialogs.close;
                   }
-                  // preview-end
                 }}
                 >
                 Delete
